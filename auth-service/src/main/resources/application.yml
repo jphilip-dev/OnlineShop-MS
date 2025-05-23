@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: Auth Service
+
+server:
+  port: 8081
+
+custom:
+  errors:
+    user-not-found-code: 404
+    user-not-found-message: ERROR_USER_NOT_FOUND
+
+    unauthorized-code: 401
+    unauthorized-message: ERROR_UNAUTHORIZED
+
+    validation-failed-code: 400
+    validation-failed-message: ERROR_VALIDATION_FAILED
