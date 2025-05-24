@@ -1,5 +1,6 @@
 package com.jphilip.onlineshop.auth.mapper;
 
+import com.jphilip.onlineshop.auth.dto.UserRequestDTO;
 import com.jphilip.onlineshop.auth.dto.UserResponseDTO;
 import com.jphilip.onlineshop.auth.entity.Role;
 import com.jphilip.onlineshop.auth.entity.User;
@@ -18,4 +19,13 @@ public class UserMapper {
                         .toList())
                 .build();
     }
+
+    public User toEntity(UserRequestDTO dto){
+        return User.builder()
+                .email(dto.getEmail())
+                .name(dto.getName())
+                .password(dto.getPassword())
+                .build();
+    }
+
 }
