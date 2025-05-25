@@ -1,12 +1,15 @@
 package com.jphilip.onlineshop.auth.exception.custom;
 
+import com.jphilip.onlineshop.auth.config.ErrorCodeConfig;
+
 public class UserNotFoundException extends UserException {
 
-    public UserNotFoundException(String errorCode, Integer statusCode) {
-        super(errorCode, statusCode);
+
+    public UserNotFoundException(ErrorCodeConfig.ErrorDetail errorDetail, String message) {
+        super(errorDetail, message);
     }
 
-    public UserNotFoundException(String errorCode, Integer statusCode, String message) {
-        super(errorCode, statusCode, message);
+    public UserNotFoundException(ErrorCodeConfig.ErrorDetail errorDetail) {
+        super(errorDetail);
     }
 }

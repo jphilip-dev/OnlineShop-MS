@@ -1,15 +1,16 @@
 package com.jphilip.onlineshop.auth.exception.custom;
 
+import com.jphilip.onlineshop.auth.config.ErrorCodeConfig;
 import lombok.Getter;
 
 @Getter
 public class UserException extends BaseException {
 
-    public UserException(String errorCode, Integer statusCode) {
-        super(errorCode, statusCode);
+    public UserException(ErrorCodeConfig.ErrorDetail errorDetail, String message) {
+        super(errorDetail, message);
     }
 
-    public UserException(String errorCode, Integer statusCode, String message) {
-        super(errorCode, statusCode, message);
+    public UserException(ErrorCodeConfig.ErrorDetail errorDetail) {
+        super(errorDetail);
     }
 }

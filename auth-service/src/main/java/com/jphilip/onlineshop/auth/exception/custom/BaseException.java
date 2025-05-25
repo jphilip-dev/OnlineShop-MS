@@ -1,5 +1,6 @@
 package com.jphilip.onlineshop.auth.exception.custom;
 
+import com.jphilip.onlineshop.auth.config.ErrorCodeConfig;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -8,32 +9,25 @@ import org.springframework.http.HttpStatus;
 @Getter
 public abstract class BaseException extends RuntimeException {
 
-    private final String errorCode;
     private HttpStatus httpStatus;
+    private final String errorMessage;
 
-    public BaseException(String errorCode, Integer statusCode) {
+    public BaseException(ErrorCodeConfig.ErrorDetail errorDetail, String message){
         super();
-        this.errorCode = errorCode;
+        this.errorMessage = errorDetail.getMessage() + (message.isBlank() ? "" : message);
         try {
-            this.httpStatus = HttpStatus.valueOf(statusCode);
+            this.httpStatus = HttpStatus.valueOf(errorDetail.getStatusCode());
         } catch (Exception ex){
-            this.httpStatus = handleStatusCodeErr(statusCode);
-        }
 
-    }
+            log.warn("Invalid status code: {}", errorDetail.getStatusCode());
 
-    public BaseException(String errorCode, Integer statusCode, String message) {
-        super(message);
-        this.errorCode = errorCode;
-        try {
-            this.httpStatus = HttpStatus.valueOf(statusCode);
-        } catch (Exception ex){
-            this.httpStatus = handleStatusCodeErr(statusCode);
+            this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
     }
 
-    private HttpStatus handleStatusCodeErr(Integer statusCode){
-        log.warn("Invalid status code: {}", statusCode);
-        return HttpStatus.INTERNAL_SERVER_ERROR;
+    public BaseException(ErrorCodeConfig.ErrorDetail errorDetail){
+        this(errorDetail, "");
     }
+
+
 }

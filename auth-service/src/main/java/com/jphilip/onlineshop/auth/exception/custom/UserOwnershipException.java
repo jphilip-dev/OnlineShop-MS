@@ -1,13 +1,15 @@
 package com.jphilip.onlineshop.auth.exception.custom;
 
+import com.jphilip.onlineshop.auth.config.ErrorCodeConfig;
 import com.jphilip.onlineshop.auth.entity.User;
 
 public class UserOwnershipException extends UserException {
-    public UserOwnershipException(String errorCode, Integer statusCode) {
-        super(errorCode, statusCode);
+
+    public UserOwnershipException(ErrorCodeConfig.ErrorDetail errorDetail, String message) {
+        super(errorDetail, message);
     }
 
-    public UserOwnershipException(String errorCode, Integer statusCode, String message) {
-        super(errorCode, statusCode, message);
+    public UserOwnershipException(ErrorCodeConfig.ErrorDetail errorDetail) {
+        super(errorDetail);
     }
 }

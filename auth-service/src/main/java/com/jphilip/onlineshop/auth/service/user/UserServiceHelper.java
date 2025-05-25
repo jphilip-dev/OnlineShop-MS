@@ -18,24 +18,21 @@ public class UserServiceHelper {
     public User validateUserByEmail(String email){
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->new UserNotFoundException(
-                        errorCodeConfig.getUserNotFoundMessage(),
-                        errorCodeConfig.getUserNotFoundStatusCode()
+                        errorCodeConfig.getNotFound()
                 ));
     }
 
     public User validateUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() ->new UserNotFoundException(
-                        errorCodeConfig.getUserNotFoundMessage(),
-                        errorCodeConfig.getUserNotFoundStatusCode()
+                        errorCodeConfig.getNotFound()
                 ));
     }
 
     public void ownershipCheck(String userEmail, String headerEmail){
         if (!userEmail.equals(headerEmail)){
             throw new UserOwnershipException(
-                    errorCodeConfig.getUnauthorizedMessage(),
-                    errorCodeConfig.getUnauthorizedStatusCode()
+                    errorCodeConfig.getUnauthorized()
             );
         }
     }

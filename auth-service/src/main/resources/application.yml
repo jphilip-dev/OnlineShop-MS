@@ -7,14 +7,15 @@ server:
 
 custom:
   errors:
-    user-not-found-status-code: 404
-    user-not-found-message: ERROR_USER_NOT_FOUND
-
-    unauthorized-status-code: 401
-    unauthorized-message: ERROR_UNAUTHORIZED
-
-    validation-failed-status-code: 400
-    validation-failed-message: ERROR_VALIDATION_FAILED
-
-    app-error-status-code: 400
-    app-error-message: ERROR_APPLICATION
+    unauthorized:
+      statusCode: 401
+      message: You are not authorized to perform this action.
+    notFound:
+      statusCode: 404
+      message: Resource not found.
+    validationFailed:
+      statusCode: 400
+      message: Validation failed.
+    appError:
+      statusCode: 500
+      message: An unexpected error occurred.
