@@ -1,4 +1,4 @@
-package com.jphilip.onlineshop.auth.service;
+package com.jphilip.onlineshop.auth.service.user;
 
 import com.jphilip.onlineshop.auth.dto.UserRequestDTO;
 import com.jphilip.onlineshop.auth.dto.UserResponseDTO;
