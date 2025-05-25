@@ -3,6 +3,7 @@ package com.jphilip.onlineshop.auth.service;
 import com.jphilip.onlineshop.auth.config.ErrorCodeConfig;
 import com.jphilip.onlineshop.auth.entity.User;
 import com.jphilip.onlineshop.auth.exception.custom.UserNotFoundException;
+import com.jphilip.onlineshop.auth.exception.custom.UserOwnershipException;
 import com.jphilip.onlineshop.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,14 @@ public class UserServiceHelper {
                         errorCodeConfig.getUserNotFoundMessage(),
                         errorCodeConfig.getUserNotFoundStatusCode()
                 ));
+    }
+
+    public void ownershipCheck(String userEmail, String headerEmail){
+        if (!userEmail.equals(headerEmail)){
+            throw new UserOwnershipException(
+                    errorCodeConfig.getUnauthorizedMessage(),
+                    errorCodeConfig.getUnauthorizedStatusCode()
+            );
+        }
     }
 }
