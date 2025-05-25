@@ -48,8 +48,13 @@ public class AuthService {
         String email = claims.get("email", String.class);
         Long id = claims.get("id", Long.class);
         String name = claims.get("name", String.class);
+        List<?> rawRoles = claims.get("roles", List.class);
 
-        return new AuthDetailsResponseDTO(id,email,name);
+        List<String> roles = rawRoles.stream()
+                .map(Object::toString)  // convert each element to String safely
+                .toList();
+
+        return new AuthDetailsResponseDTO(id,email,name, roles);
     }
 
     public UserResponseDTO register(UserRequestDTO userRequestDTO){

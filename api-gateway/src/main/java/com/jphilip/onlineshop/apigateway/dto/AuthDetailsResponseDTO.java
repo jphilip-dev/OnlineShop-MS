@@ -1,4 +1,4 @@
-package com.jphilip.onlineshop.auth.dto;
+package com.jphilip.onlineshop.apigateway.dto;
 
 import java.util.List;
 

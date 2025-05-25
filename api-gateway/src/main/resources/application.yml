@@ -9,3 +9,21 @@ spring:
           uri: ${AUTH_SERVICE_URI}
           predicates:
             - Path=/auth/**
+
+        - id: auth-service-user-route
+          uri: ${AUTH_SERVICE_URI}
+          predicates:
+            - Path=/user/**
+          filters:
+            - name: JwtValidation
+              args:
+                roles: USER
+
+        - id: auth-service-admin-route
+          uri: ${AUTH_SERVICE_URI}
+          predicates:
+            - Path=/admin/**
+          filters:
+            - name: JwtValidation
+              args:
+                roles: ADMIN
