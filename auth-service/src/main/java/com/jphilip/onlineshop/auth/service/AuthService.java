@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -49,13 +48,8 @@ public class AuthService {
         String email = claims.get("email", String.class);
         Long id = claims.get("id", Long.class);
         String name = claims.get("name", String.class);
-        Object[] rolesArray = claims.get("roles", Object[].class);
 
-        List<String> roles = Arrays.stream(rolesArray)
-                .map(Object::toString)
-                .toList();
-
-        return new AuthDetailsResponseDTO(id,email,name,roles);
+        return new AuthDetailsResponseDTO(id,email,name);
     }
 
     public UserResponseDTO register(UserRequestDTO userRequestDTO){
