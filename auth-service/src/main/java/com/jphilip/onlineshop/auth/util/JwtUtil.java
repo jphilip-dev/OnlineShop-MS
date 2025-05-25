@@ -46,7 +46,8 @@ public class JwtUtil {
                 .compact();
     }
 
-    public Claims validateTokens(String token) {
+    public Claims validateToken(String token) {
+
         return Jwts.parser()
                 .verifyWith((SecretKey) secretKey)
                 .build()
