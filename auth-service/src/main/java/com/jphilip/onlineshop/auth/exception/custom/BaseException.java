@@ -9,25 +9,26 @@ import org.springframework.http.HttpStatus;
 @Getter
 public abstract class BaseException extends RuntimeException {
 
-    private HttpStatus httpStatus;
+    private final HttpStatus httpStatus;
     private final String errorMessage;
 
     public BaseException(ErrorCodeConfig.ErrorDetail errorDetail, String message){
         super();
         this.errorMessage = errorDetail.getMessage() + (message.isBlank() ? "" : message);
+        HttpStatus status;
+
         try {
-            this.httpStatus = HttpStatus.valueOf(errorDetail.getStatusCode());
-        } catch (Exception ex){
-
-            log.warn("Invalid status code: {}", errorDetail.getStatusCode());
-
-            this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            status = HttpStatus.valueOf(errorDetail.getStatusCode());
+        } catch (Exception ex) {
+            log.warn("Invalid HTTP status code [{}] for error message '{}'. Defaulting to 500.",
+                    errorDetail.getStatusCode(), errorDetail.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+        this.httpStatus = status;
     }
 
     public BaseException(ErrorCodeConfig.ErrorDetail errorDetail){
         this(errorDetail, "");
     }
-
 
 }
