@@ -21,11 +21,11 @@ public class GlobalExceptionHandler {
     private final ErrorCodeConfig errorCodeConfig;
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponseDTO> handleOtherException(Exception ex, WebRequest request){
+    public ResponseEntity<ExceptionResponseDTO> handleOtherException(Exception ex, WebRequest request) {
 
         log.error("Unhandled error: {}", ex.getMessage(), ex);
 
-        var exception = new UserException(errorCodeConfig.getAppErrorMessage(),errorCodeConfig.getAppErrorStatusCode());
+        var exception = new UserException(errorCodeConfig.getAppErrorMessage(), errorCodeConfig.getAppErrorStatusCode());
 
         return createResponse(exception.getHttpStatus(), exception.getErrorCode(), request);
     }
@@ -36,16 +36,19 @@ public class GlobalExceptionHandler {
      *
      */
 
-    private ResponseEntity<ExceptionResponseDTO> createResponse(HttpStatus httpStatus, String errorCode, WebRequest request ){
+    private ResponseEntity<ExceptionResponseDTO> createResponse(
+            HttpStatus httpStatus,
+            String errorCode,
+            WebRequest request) {
 
         return ResponseEntity.status(httpStatus)
-                .body(new ExceptionResponseDTO(
-                        LocalDateTime.now(),
-                        httpStatus.value(),
-                        httpStatus.getReasonPhrase(),
-                        errorCode,
-                        request.getDescription(false).replace("uri=", "" )
-                        ));
+                .body(ExceptionResponseDTO.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(httpStatus.value())
+                        .error(httpStatus.getReasonPhrase())
+                        .message(errorCode)
+                        .path(request.getDescription(false).replace("uri=", ""))
+                        .build());
 
     }
 }
