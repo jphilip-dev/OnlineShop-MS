@@ -39,7 +39,6 @@ public class JwtUtil {
                 .claim("id", user.getId())
                 .claim("email", user.getEmail())
                 .claim("name", user.getName())
-                .claim("roles", user.getRoles().stream().map(Role::getName).toArray(String[]::new))
                 .issuedAt(new Date())
                 .expiration(generateExpirationDate()) // 10hrs
                 .signWith(secretKey)
