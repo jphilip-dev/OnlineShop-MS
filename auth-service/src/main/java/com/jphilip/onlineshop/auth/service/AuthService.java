@@ -1,0 +1,55 @@
+package com.jphilip.onlineshop.auth.service;
+
+import com.jphilip.onlineshop.auth.config.ErrorCodeConfig;
+import com.jphilip.onlineshop.auth.dto.AuthDetailsResponseDTO;
+import com.jphilip.onlineshop.auth.dto.LoginRequestDTO;
+import com.jphilip.onlineshop.auth.dto.TokenResponseDTO;
+import com.jphilip.onlineshop.auth.exception.custom.UserPasswordMismatchException;
+import com.jphilip.onlineshop.auth.service.user.UserServiceHelper;
+import com.jphilip.onlineshop.auth.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class AuthService {
+
+    private final UserServiceHelper userServiceHelper;
+    private final ErrorCodeConfig errorCodeConfig;
+    private final JwtUtil jwtUtil;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public TokenResponseDTO authenticate(LoginRequestDTO loginRequestDTO){
+
+        var user = userServiceHelper.validateUserByEmail(loginRequestDTO.email());
+
+        if(!passwordEncoder.matches(loginRequestDTO.password(), user.getPassword())){
+            throw new UserPasswordMismatchException(errorCodeConfig.getUnauthorized());
+        }
+
+        String token = jwtUtil.generateToken(user);
+
+        return new TokenResponseDTO(token);
+    }
+
+    public AuthDetailsResponseDTO validateToken(String token){
+
+        var claims = jwtUtil.validateTokens(token);
+
+        String email = claims.get("email", String.class);
+        Long id = claims.get("id", Long.class);
+        String name = claims.get("name", String.class);
+        Object[] rolesArray = claims.get("roles", Object[].class);
+
+        List<String> roles = Arrays.stream(rolesArray)
+                .map(Object::toString)
+                .toList();
+
+        return new AuthDetailsResponseDTO(id,email,name,roles);
+    }
+}
